@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+/* 1. Definisikan Custom Utilities agar dikenali Tailwind v4 */
+@utility vintage-border {
+  border: 3px solid black;
+}
+
+@utility vintage-shadow {
+  box-shadow: 6px 6px 0px 0px rgba(0,0,0,1);
+}
+
+/* 2. Gunakan utility tersebut di komponen atau class lain */
+@layer components {
+  .btn-vintage {
+    @apply vintage-border bg-white px-4 py-2 font-bold transition-all cursor-pointer inline-flex items-center gap-2;
+    box-shadow: 4px 4px 0px 0px rgba(0,0,0,1);
+  }
+  
+  .btn-vintage:active {
+    @apply translate-x-[2px] translate-y-[2px];
+    box-shadow: none;
+  }
+}
+
+/* 3. Base styling */
+body {
+  @apply bg-[#E9E4D9] text-black;
+  font-family: 'Courier New', Courier, monospace;
+}
