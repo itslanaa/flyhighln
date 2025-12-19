@@ -328,7 +328,28 @@ const AdminDashboard = () => {
 };
 
 /* ================= AUTH & ROUTER ================= */
-const Login = () => { /* UTUH, TIDAK DIUBAH */ return null; };
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (error) alert("Unauthorized Command.");
+  };
+  return (
+    <div className="min-h-screen bg-black flex items-center justify-center p-6 text-black">
+      <div className="bg-[#E9E4D9] border-[4px] border-black p-10 w-full max-w-sm shadow-[15px_15px_0px_0px_rgba(255,255,255,0.1)]">
+        <h2 className="text-3xl font-black uppercase mb-8 border-b-4 border-black pb-2 italic flex items-center gap-3"><Lock size={30}/> Restricted</h2>
+        <form onSubmit={handleLogin} className="space-y-5">
+          <input type="email" placeholder="ADMIN_LOGIN" className="w-full p-4 border-2 border-black bg-transparent font-mono outline-none" onChange={(e)=>setEmail(e.target.value)} />
+          <input type="password" placeholder="PASSWORD" className="w-full p-4 border-2 border-black bg-transparent font-mono outline-none" onChange={(e)=>setPassword(e.target.value)} />
+          <button className="w-full bg-black text-white p-5 font-black uppercase tracking-widest text-xl hover:bg-zinc-800 transition-colors italic">Authorize</button>
+        </form>
+        <Link to="/" className="block text-center mt-8 text-[10px] font-black underline uppercase opacity-50">Return to Archive</Link>
+      </div>
+    </div>
+  );
+};
 
 export default function App() {
   const [session, setSession] = useState(null);
