@@ -1,6 +1,7 @@
 {
   "name": "flyhighlana",
-  "homepage": "https://itslanaa.github.io/flyhighln",
+  "private": true,
+  "homepage": ".",
   "version": "0.0.0",
   "type": "module",
   "scripts": {
