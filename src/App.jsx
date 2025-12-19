@@ -7,8 +7,6 @@ import {
   Plus, Trash2, Settings as SettingsIcon, LayoutDashboard, Save, 
   Image as ImageIcon, Pin, PinOff, Search, Eye, ArrowLeft, X
 } from 'lucide-react';
-import React, { useState, useEffect } from 'react';
-import { supabase } from '../../../../../../KK/flyhighlana/src/supabaseClient';
 
 /* ================= FRONTEND: LANDING PAGE ================= */
 const LandingPage = () => {
