@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, Navigate, Link, useNavigate } from 'react-router-dom';
 import { supabase } from './supabaseClient';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
@@ -17,7 +17,6 @@ const LandingPage = () => {
 
   useEffect(() => {
     fetchContent();
-    // Auto-play trigger pada interaksi pertama user
     const handleInteraction = () => {
       if (audioRef.current && !isPlaying) {
         audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
@@ -46,7 +45,7 @@ const LandingPage = () => {
       <header className="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-8 mb-16 mt-4">
         <div className="relative group">
           <div className="w-32 h-32 md:w-48 md:h-48 rounded-full border-[4px] border-black overflow-hidden shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] bg-pink-300">
-            <img src={settings?.profile_url || "https://via.placeholder.com/150"} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+            <img src={settings?.profile_url || "https://via.placeholder.com/150"} className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-700" alt="profile"/>
           </div>
           <Heart className="absolute -bottom-1 -right-1 bg-yellow-300 border-2 border-black p-2 rounded-full animate-pulse" size={40} fill="red" />
         </div>
@@ -57,12 +56,13 @@ const LandingPage = () => {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24">
+      {/* Grid Centered for Desktop */}
+      <main className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 justify-items-center lg:justify-center">
         <AnimatePresence>
           {pinnedQuotes.map((q, i) => (
             <motion.div key={q.id} initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ delay: i * 0.1 }}
-              className="bg-white border-[3px] border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col relative group overflow-hidden">
-              {q.image_url && <div className="h-48 border-b-[3px] border-black overflow-hidden"><img src={q.image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" /></div>}
+              className="bg-white border-[3px] border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,1)] flex flex-col relative group overflow-hidden w-full max-w-sm">
+              {q.image_url && <div className="h-48 border-b-[3px] border-black overflow-hidden"><img src={q.image_url} className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all" alt="quote"/></div>}
               <div className="p-6">
                 <Pin size={14} className="absolute top-3 right-3 text-pink-500" />
                 <p className="text-xl font-bold italic leading-tight mb-4">"{q.text}"</p>
@@ -73,7 +73,7 @@ const LandingPage = () => {
               </div>
             </motion.div>
           ))}
-          <Link to="/gallery" className="group">
+          <Link to="/gallery" className="group w-full max-w-sm">
             <div className="h-full min-h-[220px] bg-black text-white border-[3px] border-black shadow-[10px_10px_0px_0px_rgba(0,0,0,0.2)] flex flex-col items-center justify-center p-6 hover:bg-zinc-800 transition-colors">
               <Plus size={48} className="mb-2 group-hover:rotate-90 transition-transform" />
               <p className="font-black uppercase tracking-tighter text-xl italic">Explore All Archive</p>
@@ -120,10 +120,10 @@ const GalleryPage = () => {
             <option value="">All Years</option><option value="2025">2025</option><option value="2024">2024</option>
           </select>
         </div>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-items-center">
           {filtered.map(q => (
-            <div key={q.id} className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col">
-              {q.image_url && <img src={q.image_url} className="w-full h-56 object-cover border-b-2 border-black" />}
+            <div key={q.id} className="bg-white border-[3px] border-black shadow-[8px_8px_0px_0px_rgba(0,0,0,1)] overflow-hidden flex flex-col w-full max-w-sm">
+              {q.image_url && <img src={q.image_url} className="w-full h-56 object-cover border-b-2 border-black" alt="archive"/>}
               <div className="p-6">
                 <p className="font-bold italic mb-4">"{q.text}"</p>
                 <p className="text-[9px] font-mono opacity-40 uppercase tracking-widest">{new Date(q.created_at).toLocaleDateString()}</p>
@@ -238,7 +238,7 @@ const AdminDashboard = () => {
           <div className="fixed inset-0 bg-black/90 z-[100] flex items-center justify-center p-4 backdrop-blur-md" onClick={()=>setSelectedQuote(null)}>
             <motion.div initial={{ scale: 0.9, rotate: -1 }} animate={{ scale: 1, rotate: 0 }} exit={{ scale: 0.9 }} className="bg-white border-4 border-black max-w-2xl w-full p-8 relative" onClick={e=>e.stopPropagation()}>
               <button className="absolute top-4 right-4 bg-black text-white p-2" onClick={()=>setSelectedQuote(null)}><X size={24}/></button>
-              {selectedQuote.image_url && <img src={selectedQuote.image_url} className="w-full h-80 object-cover border-2 border-black mb-6 shadow-md" />}
+              {selectedQuote.image_url && <img src={selectedQuote.image_url} className="w-full h-80 object-cover border-2 border-black mb-6 shadow-md" alt="detail"/>}
               <Quote className="opacity-10 mb-2" size={48} />
               <p className="text-3xl font-black italic leading-tight mb-8">"{selectedQuote.text}"</p>
               <div className="flex justify-between font-mono text-[10px] border-t-2 border-black pt-4 uppercase tracking-widest font-black opacity-50"><span>ID: {selectedQuote.id.slice(0,8)}</span><span>Date: {new Date(selectedQuote.created_at).toLocaleString()}</span></div>
@@ -281,14 +281,13 @@ export default function App() {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => setSession(session));
     return () => subscription.unsubscribe();
   }, []);
+
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/gallery" element={<GalleryPage />} />
-        <Route path="/admin" element={session ? <AdminDashboard /> : <Login />} />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </Router>
+    <Routes>
+      <Route path="/" element={<LandingPage />} />
+      <Route path="/gallery" element={<GalleryPage />} />
+      <Route path="/admin" element={session ? <AdminDashboard /> : <Login />} />
+      <Route path="*" element={<Navigate to="/" />} />
+    </Routes>
   );
 }
